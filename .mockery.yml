@@ -1,0 +1,23 @@
+with-expecter: false
+packages:
+    github.com/jfelipearaujo-org/ms-customer-management/internal/environment:
+        config:
+          filename: "{{ .InterfaceName | snakecase }}_mock.go"
+          dir: "./internal/environment/mocks"
+          mockname: "Mock{{.InterfaceName}}"
+          outpkg: "mocks"
+          include-regex: "(Environment)"
+    github.com/jfelipearaujo-org/ms-customer-management/internal/provider:
+        config:
+          filename: "{{ .InterfaceName | snakecase }}_mock.go"
+          dir: "./internal/provider/mocks"
+          mockname: "Mock{{.InterfaceName}}"
+          outpkg: "mocks"
+          include-regex: "(Provider)"
+    github.com/jfelipearaujo-org/ms-customer-management/internal/adapter/database:
+        config:
+          filename: "{{ .InterfaceName | snakecase }}_mock.go"
+          dir: "./internal/adapter/database/mocks"
+          mockname: "Mock{{.InterfaceName}}"
+          outpkg: "mocks"
+          include-regex: "(Service)"
