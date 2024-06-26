@@ -19,6 +19,7 @@ spec:
         app: ms-customer-management
     spec:
       serviceAccountName: sa-customers
+      automountServiceAccountToken: false
       containers:
         - name: ms-customer-management
           image: jsfelipearaujo/ms-customer-management:latest
