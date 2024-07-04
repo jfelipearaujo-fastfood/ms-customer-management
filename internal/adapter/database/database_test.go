@@ -1,9 +1,10 @@
-package database
+package database_test
 
 import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/jfelipearaujo-org/ms-customer-management/internal/adapter/database"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/environment"
 	"github.com/stretchr/testify/assert"
 )
@@ -23,8 +24,8 @@ func TestGetInstance(t *testing.T) {
 			},
 		}
 
-		service := NewDatabase(config)
-		service.(*Service).Client = db
+		service := database.NewDatabase(config)
+		service.(*database.Service).Client = db
 
 		// Act
 		res := service.GetInstance()
@@ -49,8 +50,8 @@ func TestHealth(t *testing.T) {
 			},
 		}
 
-		service := NewDatabase(config)
-		service.(*Service).Client = db
+		service := database.NewDatabase(config)
+		service.(*database.Service).Client = db
 
 		// Act
 		res := service.Health()
@@ -74,7 +75,7 @@ func TestHealth(t *testing.T) {
 			},
 		}
 
-		service := NewDatabase(config)
+		service := database.NewDatabase(config)
 
 		// Act
 		res := service.Health()

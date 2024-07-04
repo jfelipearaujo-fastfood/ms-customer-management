@@ -10,11 +10,15 @@ import (
 	awsConfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/adapter/database"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/environment"
+	"github.com/jfelipearaujo-org/ms-customer-management/internal/handler/customer/delete_account"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/handler/health"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/provider/time_provider"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/shared/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	customer_repository "github.com/jfelipearaujo-org/ms-customer-management/internal/repository/customer"
+	customer_delete_account_svc "github.com/jfelipearaujo-org/ms-customer-management/internal/service/customer/delete_account"
 )
 
 type Server struct {
@@ -39,11 +43,17 @@ func NewServer(config *environment.Config) *Server {
 	databaseService := database.NewDatabase(config)
 
 	timeProvider := time_provider.NewTimeProvider(time.Now)
+
+	customer_repository := customer_repository.NewRepository(databaseService.GetInstance())
+
 	return &Server{
 		Config:          config,
 		DatabaseService: databaseService,
 		Dependency: Dependency{
 			TimeProvider: timeProvider,
+
+			CustomerRepository: customer_repository,
+			CustomerService:    customer_delete_account_svc.NewService(customer_repository),
 		},
 	}
 }
@@ -79,5 +89,7 @@ func (server *Server) registerHealthCheck(e *echo.Echo) {
 }
 
 func (s *Server) registerCustomerHandlers(e *echo.Group) {
-	// # TODO: Implement handlers
+	customerHandler := delete_account.NewHandler(s.Dependency.CustomerService)
+
+	e.DELETE("/customers/:id", customerHandler.Handle)
 }

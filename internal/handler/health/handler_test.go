@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/jfelipearaujo-org/ms-customer-management/internal/adapter/database/mocks"
+	"github.com/jfelipearaujo-org/ms-customer-management/internal/adapter/database"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/shared/health"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
@@ -14,7 +14,7 @@ import (
 func TestNewHandler(t *testing.T) {
 	t.Run("Should return a new handler", func(t *testing.T) {
 		// Arrange
-		db := mocks.NewMockDatabaseService(t)
+		db := database.NewMockDatabaseService(t)
 
 		// Act
 		handler := NewHandler(db)
@@ -27,7 +27,7 @@ func TestNewHandler(t *testing.T) {
 func TestHandler_Handle(t *testing.T) {
 	t.Run("Should return a map with healthy database status", func(t *testing.T) {
 		// Arrange
-		db := mocks.NewMockDatabaseService(t)
+		db := database.NewMockDatabaseService(t)
 
 		db.On("Health").Return(&health.HealthStatus{
 			Status: "healthy",
@@ -52,7 +52,7 @@ func TestHandler_Handle(t *testing.T) {
 
 	t.Run("Should return a map with unhealthy database status", func(t *testing.T) {
 		// Arrange
-		db := mocks.NewMockDatabaseService(t)
+		db := database.NewMockDatabaseService(t)
 
 		db.On("Health").Return(&health.HealthStatus{
 			Status: "unhealthy",
