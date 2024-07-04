@@ -158,7 +158,7 @@ test: ## Test the application
 
 test-bdd: ## Run BDD tests
 	@echo "Running BDD tests..."
-	@go test -count=1 ./tests/... -test.v -test.run ^TestFeatures$
+	@go test -count=1 ./tests/... -timeout=300s -test.v -test.run ^TestFeatures$
 
 cover: ## View the coverage
 	@echo "Analyzing coverage..."

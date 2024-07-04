@@ -2,22 +2,36 @@ with-expecter: false
 packages:
     github.com/jfelipearaujo-org/ms-customer-management/internal/environment:
         config:
-          filename: "{{ .InterfaceName | snakecase }}_mock.go"
-          dir: "./internal/environment/mocks"
+          filename: "environment_mock.go"
+          dir: "./internal/environment"
           mockname: "Mock{{.InterfaceName}}"
-          outpkg: "mocks"
+          inpackage: true
           include-regex: "(Environment)"
     github.com/jfelipearaujo-org/ms-customer-management/internal/provider:
         config:
-          filename: "{{ .InterfaceName | snakecase }}_mock.go"
-          dir: "./internal/provider/mocks"
+          filename: "provider_mock.go"
+          dir: "./internal/provider"
           mockname: "Mock{{.InterfaceName}}"
-          outpkg: "mocks"
+          inpackage: true
           include-regex: "(Provider)"
     github.com/jfelipearaujo-org/ms-customer-management/internal/adapter/database:
         config:
-          filename: "{{ .InterfaceName | snakecase }}_mock.go"
-          dir: "./internal/adapter/database/mocks"
+          filename: "database_mock.go"
+          dir: "./internal/adapter/database"
           mockname: "Mock{{.InterfaceName}}"
-          outpkg: "mocks"
+          inpackage: true
+          include-regex: "(Service)"
+    github.com/jfelipearaujo-org/ms-customer-management/internal/repository/customer:
+        config:
+          filename: "repository_mock.go"
+          dir: "./internal/repository/customer"
+          mockname: "Mock{{.InterfaceName}}"
+          inpackage: true
+          include-regex: "(Repository)"
+    github.com/jfelipearaujo-org/ms-customer-management/internal/service/customer/delete_account:
+        config:
+          filename: "service_mock.go"
+          dir: "./internal/service/customer/delete_account"
+          mockname: "Mock{{.InterfaceName}}"
+          inpackage: true
           include-regex: "(Service)"
