@@ -12,7 +12,7 @@ func TestNewServer(t *testing.T) {
 		// Arrange
 		config := &environment.Config{
 			ApiConfig: &environment.ApiConfig{
-				Port: 8080,
+				Port: 5000,
 			},
 			DbConfig: &environment.DatabaseConfig{
 				Url: "postgres://host:1234",
@@ -31,13 +31,13 @@ func TestNewServer(t *testing.T) {
 		// Arrange
 		config := &environment.Config{
 			ApiConfig: &environment.ApiConfig{
-				Port: 8080,
+				Port: 5000,
 			},
 			DbConfig: &environment.DatabaseConfig{
 				Url: "postgres://host:1234",
 			},
 			CloudConfig: &environment.CloudConfig{
-				BaseEndpoint: "http://localhost:8080",
+				BaseEndpoint: "http://localhost:5000",
 			},
 		}
 
@@ -52,7 +52,7 @@ func TestNewServer(t *testing.T) {
 		// Arrange
 		config := &environment.Config{
 			ApiConfig: &environment.ApiConfig{
-				Port: 8080,
+				Port: 5000,
 			},
 			DbConfig: &environment.DatabaseConfig{
 				Url: "postgres://host:1234",
@@ -67,6 +67,6 @@ func TestNewServer(t *testing.T) {
 
 		// Assert
 		assert.NotNil(t, httpServer)
-		assert.Equal(t, ":8080", httpServer.Addr)
+		assert.Equal(t, ":5000", httpServer.Addr)
 	})
 }

@@ -21,7 +21,7 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 # Copy the binary to the production image from the builder stage
 COPY --from=builder /app/api /app/api
 
-EXPOSE 8080
+EXPOSE 5000
 
 # Run the api on container startup
 CMD ["/app/api"]

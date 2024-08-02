@@ -18,6 +18,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	customer_repository "github.com/jfelipearaujo-org/ms-customer-management/internal/repository/customer"
+	delete_request_repository "github.com/jfelipearaujo-org/ms-customer-management/internal/repository/delete_request"
 	customer_delete_account_svc "github.com/jfelipearaujo-org/ms-customer-management/internal/service/customer/delete_account"
 )
 
@@ -45,6 +46,7 @@ func NewServer(config *environment.Config) *Server {
 	timeProvider := time_provider.NewTimeProvider(time.Now)
 
 	customer_repository := customer_repository.NewRepository(databaseService.GetInstance())
+	delete_request_repository := delete_request_repository.NewRepository(databaseService.GetInstance())
 
 	return &Server{
 		Config:          config,
@@ -53,7 +55,7 @@ func NewServer(config *environment.Config) *Server {
 			TimeProvider: timeProvider,
 
 			CustomerRepository: customer_repository,
-			CustomerService:    customer_delete_account_svc.NewService(customer_repository),
+			CustomerService:    customer_delete_account_svc.NewService(customer_repository, delete_request_repository),
 		},
 	}
 }
@@ -91,5 +93,5 @@ func (server *Server) registerHealthCheck(e *echo.Echo) {
 func (s *Server) registerCustomerHandlers(e *echo.Group) {
 	customerHandler := delete_account.NewHandler(s.Dependency.CustomerService)
 
-	e.DELETE("/customers/:id", customerHandler.Handle)
+	e.POST("/customers/:id/delete-account", customerHandler.Handle)
 }

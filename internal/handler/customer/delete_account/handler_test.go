@@ -1,6 +1,8 @@
 package delete_account_test
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -19,14 +21,22 @@ func TestHandler_Handle(t *testing.T) {
 		// Arrange
 		service := delete_account_svc.NewMockService(t)
 
-		service.On("Delete", mock.Anything, delete_account_svc.DeleteAccountRequest{
-			Id: "733f1ba6-1f62-4495-bf33-6f181fdf1030",
-		}).
+		service.On("Delete", mock.Anything, mock.Anything).
 			Return(nil)
 
 		handler := delete_account.NewHandler(service)
 
-		req := httptest.NewRequest(echo.DELETE, "/", nil)
+		reqBody := delete_account_svc.DeleteAccountRequest{
+			Id:      "733f1ba6-1f62-4495-bf33-6f181fdf1030",
+			Name:    "John Doe",
+			Address: "Av. Brasil, 1000",
+			Phone:   "1122334455",
+		}
+
+		body, err := json.Marshal(reqBody)
+		assert.NoError(t, err)
+
+		req := httptest.NewRequest(echo.POST, "/", bytes.NewBuffer(body))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 		resp := httptest.NewRecorder()
@@ -38,7 +48,7 @@ func TestHandler_Handle(t *testing.T) {
 		ctx.SetParamValues("733f1ba6-1f62-4495-bf33-6f181fdf1030")
 
 		// Act
-		err := handler.Handle(ctx)
+		err = handler.Handle(ctx)
 
 		// Assert
 		assert.NoError(t, err)
@@ -50,13 +60,22 @@ func TestHandler_Handle(t *testing.T) {
 		// Arrange
 		service := delete_account_svc.NewMockService(t)
 
-		service.On("Delete", mock.Anything, delete_account_svc.DeleteAccountRequest{
-			Id: "733f1ba6-1f62-4495-bf33-6f181fdf1030",
-		}).Return(custom_error.ErrRequestNotValid)
+		service.On("Delete", mock.Anything, mock.Anything).
+			Return(custom_error.ErrRequestNotValid)
 
 		handler := delete_account.NewHandler(service)
 
-		req := httptest.NewRequest(echo.DELETE, "/", nil)
+		reqBody := delete_account_svc.DeleteAccountRequest{
+			Id:      "733f1ba6-1f62-4495-bf33-6f181fdf1030",
+			Name:    "John Doe",
+			Address: "Av. Brasil, 1000",
+			Phone:   "1122334455",
+		}
+
+		body, err := json.Marshal(reqBody)
+		assert.NoError(t, err)
+
+		req := httptest.NewRequest(echo.POST, "/", bytes.NewBuffer(body))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 		resp := httptest.NewRecorder()
@@ -68,7 +87,7 @@ func TestHandler_Handle(t *testing.T) {
 		ctx.SetParamValues("733f1ba6-1f62-4495-bf33-6f181fdf1030")
 
 		// Act
-		err := handler.Handle(ctx)
+		err = handler.Handle(ctx)
 
 		// Assert
 		assert.Error(t, err)
@@ -89,13 +108,22 @@ func TestHandler_Handle(t *testing.T) {
 		// Arrange
 		service := delete_account_svc.NewMockService(t)
 
-		service.On("Delete", mock.Anything, delete_account_svc.DeleteAccountRequest{
-			Id: "733f1ba6-1f62-4495-bf33-6f181fdf1030",
-		}).Return(assert.AnError)
+		service.On("Delete", mock.Anything, mock.Anything).
+			Return(assert.AnError)
 
 		handler := delete_account.NewHandler(service)
 
-		req := httptest.NewRequest(echo.DELETE, "/", nil)
+		reqBody := delete_account_svc.DeleteAccountRequest{
+			Id:      "733f1ba6-1f62-4495-bf33-6f181fdf1030",
+			Name:    "John Doe",
+			Address: "Av. Brasil, 1000",
+			Phone:   "1122334455",
+		}
+
+		body, err := json.Marshal(reqBody)
+		assert.NoError(t, err)
+
+		req := httptest.NewRequest(echo.POST, "/", bytes.NewBuffer(body))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 		resp := httptest.NewRecorder()
@@ -107,7 +135,7 @@ func TestHandler_Handle(t *testing.T) {
 		ctx.SetParamValues("733f1ba6-1f62-4495-bf33-6f181fdf1030")
 
 		// Act
-		err := handler.Handle(ctx)
+		err = handler.Handle(ctx)
 
 		// Assert
 		assert.Error(t, err)

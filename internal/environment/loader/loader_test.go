@@ -32,7 +32,7 @@ func TestGetEnvironment(t *testing.T) {
 			name  string
 			value string
 		}{
-			{"API_PORT", "8080"},
+			{"API_PORT", "5000"},
 			{"API_ENV_NAME", "development"},
 			{"API_VERSION", "v1"},
 			{"DB_URL", "db://host:1234"},
@@ -46,7 +46,7 @@ func TestGetEnvironment(t *testing.T) {
 
 		expected := &environment.Config{
 			ApiConfig: &environment.ApiConfig{
-				Port:       8080,
+				Port:       5000,
 				EnvName:    "development",
 				ApiVersion: "v1",
 			},
@@ -74,7 +74,7 @@ func TestGetEnvironment(t *testing.T) {
 			name  string
 			value string
 		}{
-			{"API_PORT", "8080"},
+			{"API_PORT", "5000"},
 			{"API_ENV_NAME", "development"},
 			{"API_VERSION", "v1"},
 			{"DB_URL", "db://host:1234"},
@@ -101,7 +101,7 @@ func TestGetEnvironmentFromFile(t *testing.T) {
 
 		expected := &environment.Config{
 			ApiConfig: &environment.ApiConfig{
-				Port:       8080,
+				Port:       5000,
 				EnvName:    "development",
 				ApiVersion: "v1",
 			},
