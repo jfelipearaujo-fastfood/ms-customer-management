@@ -35,3 +35,10 @@ packages:
           mockname: "Mock{{.InterfaceName}}"
           inpackage: true
           include-regex: "(Service)"
+    github.com/jfelipearaujo-org/ms-customer-management/internal/repository/delete_request:
+        config:
+          filename: "repository_mock.go"
+          dir: "./internal/repository/delete_request"
+          mockname: "Mock{{.InterfaceName}}"
+          inpackage: true
+          include-regex: "(Repository)"

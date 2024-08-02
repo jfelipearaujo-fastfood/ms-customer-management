@@ -1,9 +1,15 @@
-@host=http://localhost:8080
+@host=http://localhost:5000
 
 ### Health Check
 GET {{host}}/health
 Content-Type: application/json
 
 ### Delete Customer
-DELETE {{host}}/api/v1/customers/19b5408e-8ee2-47d4-953b-196d41f1e367
+POST {{host}}/api/v1/customers/19b5408e-8ee2-47d4-953b-196d41f1e367/delete-account
 Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "address": "Av. Brasil, 1000",
+    "phone": "1122334455"
+}

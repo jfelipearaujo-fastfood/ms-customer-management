@@ -8,7 +8,11 @@ import (
 )
 
 type DeleteAccountRequest struct {
-	Id string `param:"id" validate:"required,uuid4"`
+	Id string `param:"id" json:"-" validate:"required,uuid4"`
+
+	Name    string `json:"name" validate:"required"`
+	Address string `json:"address" validate:"required"`
+	Phone   string `json:"phone" validate:"required"`
 }
 
 func (r *DeleteAccountRequest) Validate() error {

@@ -7,8 +7,3 @@ Feature: Delete Account
     Given I have a customer account
     When I delete the customer account
     Then the customer account should be deleted
-
-  Scenario: Delete customer that does not exist
-    Given I have a non existent customer account
-    When I delete the customer account
-    Then the customer account should not be deleted

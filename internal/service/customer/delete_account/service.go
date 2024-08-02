@@ -3,16 +3,24 @@ package delete_account
 import (
 	"context"
 
+	"github.com/jfelipearaujo-org/ms-customer-management/internal/entity"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/repository/customer"
+	"github.com/jfelipearaujo-org/ms-customer-management/internal/repository/delete_request"
+	"github.com/jfelipearaujo-org/ms-customer-management/internal/shared/custom_error"
 )
 
 type service struct {
-	repository customer.Repository
+	customerRepository      customer.Repository
+	deleteRequestRepository delete_request.Repository
 }
 
-func NewService(repository customer.Repository) Service {
+func NewService(
+	customerRepository customer.Repository,
+	deleteRequestRepository delete_request.Repository,
+) Service {
 	return &service{
-		repository: repository,
+		customerRepository:      customerRepository,
+		deleteRequestRepository: deleteRequestRepository,
 	}
 }
 
@@ -21,5 +29,23 @@ func (s *service) Delete(ctx context.Context, request DeleteAccountRequest) erro
 		return err
 	}
 
-	return s.repository.Delete(ctx, request.Id)
+	if _, err := s.customerRepository.Get(ctx, request.Id); err != nil {
+		return err
+	}
+
+	existingDeleteRequest, err := s.deleteRequestRepository.GetByCustomerId(ctx, request.Id)
+	if err != nil && err != custom_error.ErrDeletionRequestNotFound {
+		return err
+	}
+
+	if existingDeleteRequest.Id != "" {
+		return custom_error.ErrDeletionRequestAlreadyCreated
+	}
+
+	deleteRequest := entity.NewDeleteRequest(request.Id,
+		request.Name,
+		request.Address,
+		request.Phone)
+
+	return s.deleteRequestRepository.Create(ctx, deleteRequest)
 }
