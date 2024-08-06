@@ -13,6 +13,7 @@ import (
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/handler/customer/delete_account"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/handler/health"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/provider/time_provider"
+	token "github.com/jfelipearaujo-org/ms-customer-management/internal/server/middlewares"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/shared/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -93,5 +94,6 @@ func (server *Server) registerHealthCheck(e *echo.Echo) {
 func (s *Server) registerCustomerHandlers(e *echo.Group) {
 	customerHandler := delete_account.NewHandler(s.Dependency.CustomerService)
 
-	e.POST("/customers/:id/delete-account", customerHandler.Handle)
+	e.Use(token.Middleware())
+	e.POST("/customers/delete-account", customerHandler.Handle)
 }

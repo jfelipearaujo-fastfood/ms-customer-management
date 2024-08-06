@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -27,7 +28,6 @@ func TestHandler_Handle(t *testing.T) {
 		handler := delete_account.NewHandler(service)
 
 		reqBody := delete_account_svc.DeleteAccountRequest{
-			Id:      "733f1ba6-1f62-4495-bf33-6f181fdf1030",
 			Name:    "John Doe",
 			Address: "Av. Brasil, 1000",
 			Phone:   "1122334455",
@@ -43,9 +43,8 @@ func TestHandler_Handle(t *testing.T) {
 
 		e := echo.New()
 		ctx := e.NewContext(req, resp)
-		ctx.SetPath("/api/v1/customers/:id")
-		ctx.SetParamNames("id")
-		ctx.SetParamValues("733f1ba6-1f62-4495-bf33-6f181fdf1030")
+		ctx.SetPath("/api/v1/customers/delete-account")
+		ctx.Set("userId", uuid.NewString())
 
 		// Act
 		err = handler.Handle(ctx)
@@ -66,7 +65,6 @@ func TestHandler_Handle(t *testing.T) {
 		handler := delete_account.NewHandler(service)
 
 		reqBody := delete_account_svc.DeleteAccountRequest{
-			Id:      "733f1ba6-1f62-4495-bf33-6f181fdf1030",
 			Name:    "John Doe",
 			Address: "Av. Brasil, 1000",
 			Phone:   "1122334455",
@@ -82,9 +80,8 @@ func TestHandler_Handle(t *testing.T) {
 
 		e := echo.New()
 		ctx := e.NewContext(req, resp)
-		ctx.SetPath("/api/v1/customers/:id")
-		ctx.SetParamNames("id")
-		ctx.SetParamValues("733f1ba6-1f62-4495-bf33-6f181fdf1030")
+		ctx.SetPath("/api/v1/customers/delete-account")
+		ctx.Set("userId", uuid.NewString())
 
 		// Act
 		err = handler.Handle(ctx)
@@ -114,7 +111,6 @@ func TestHandler_Handle(t *testing.T) {
 		handler := delete_account.NewHandler(service)
 
 		reqBody := delete_account_svc.DeleteAccountRequest{
-			Id:      "733f1ba6-1f62-4495-bf33-6f181fdf1030",
 			Name:    "John Doe",
 			Address: "Av. Brasil, 1000",
 			Phone:   "1122334455",
@@ -130,9 +126,8 @@ func TestHandler_Handle(t *testing.T) {
 
 		e := echo.New()
 		ctx := e.NewContext(req, resp)
-		ctx.SetPath("/api/v1/customers/:id")
-		ctx.SetParamNames("id")
-		ctx.SetParamValues("733f1ba6-1f62-4495-bf33-6f181fdf1030")
+		ctx.SetPath("/api/v1/customers/delete-account")
+		ctx.Set("userId", uuid.NewString())
 
 		// Act
 		err = handler.Handle(ctx)
