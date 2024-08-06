@@ -19,7 +19,9 @@ func NewHandler(service delete_account.Service) *Handler {
 }
 
 func (h *Handler) Handle(ctx echo.Context) error {
-	var request delete_account.DeleteAccountRequest
+	request := delete_account.DeleteAccountRequest{
+		Id: ctx.Get("userId").(string),
+	}
 
 	if err := ctx.Bind(&request); err != nil {
 		return custom_error.NewHttpAppError(http.StatusBadRequest, "invalid request", err)

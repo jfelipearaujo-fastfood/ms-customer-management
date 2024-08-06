@@ -11,6 +11,7 @@ import (
 
 	"github.com/cucumber/godog"
 	"github.com/docker/go-connections/nat"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/jfelipearaujo-org/ms-customer-management/internal/service/customer/delete_account"
 	"github.com/jfelipearaujo/testcontainers/pkg/container"
 	"github.com/jfelipearaujo/testcontainers/pkg/container/localstack"
@@ -25,6 +26,7 @@ import (
 type feature struct {
 	HostApi    string
 	CustomerId string
+	Token      string
 
 	StatusCode int
 }
@@ -137,9 +139,33 @@ func initializeScenario(ctx *godog.ScenarioContext) {
 	})
 }
 
+func generateToken(userId string, expire time.Duration) (string, error) {
+	claims := jwt.MapClaims{
+		"sub": userId,
+		"exp": time.Now().Add(expire).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString([]byte("my-secret"))
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("Bearer %s", tokenString), nil
+}
+
 func iHaveACustomerAccount(ctx context.Context) (context.Context, error) {
 	feat := testState.Retrieve(ctx)
 	feat.CustomerId = "19b5408e-8ee2-47d4-953b-196d41f1e367"
+
+	token, err := generateToken(feat.CustomerId, time.Minute*1)
+	if err != nil {
+		return ctx, err
+	}
+
+	feat.Token = token
+
 	return testState.Enrich(ctx, feat), nil
 }
 
@@ -147,7 +173,7 @@ func iDeleteTheCustomerAccount(ctx context.Context) (context.Context, error) {
 	feat := testState.Retrieve(ctx)
 
 	client := &http.Client{}
-	route := fmt.Sprintf("%s/api/v1/customers/%s/delete-account", feat.HostApi, feat.CustomerId)
+	route := fmt.Sprintf("%s/api/v1/customers/delete-account", feat.HostApi)
 
 	reqBody := delete_account.DeleteAccountRequest{
 		Name:    "John Doe",
@@ -164,6 +190,7 @@ func iDeleteTheCustomerAccount(ctx context.Context) (context.Context, error) {
 		return ctx, err
 	}
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set("Authorization", feat.Token)
 
 	resp, err := client.Do(req)
 	if err != nil {

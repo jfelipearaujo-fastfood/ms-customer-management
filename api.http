@@ -5,8 +5,9 @@ GET {{host}}/health
 Content-Type: application/json
 
 ### Delete Customer
-POST {{host}}/api/v1/customers/19b5408e-8ee2-47d4-953b-196d41f1e367/delete-account
+POST {{host}}/api/v1/customers/delete-account
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjI5MDkxNDksInN1YiI6IjZmYzQ3MjFjLWNjNGUtNDQ0Mi04MjU3LWFjN2JjMDUyNThkMiJ9.hFEJAbbdrAcMrRDQhhJYutN10dut1GiWmM2C99W9pXI
 
 {
     "name": "John Doe",

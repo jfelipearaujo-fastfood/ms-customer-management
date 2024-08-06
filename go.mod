@@ -12,6 +12,7 @@ require (
 	github.com/docker/go-connections v0.5.0
 	github.com/doug-martin/goqu/v9 v9.19.0
 	github.com/go-playground/validator/v10 v10.22.0
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0
 	github.com/jfelipearaujo/testcontainers v1.1.0
 	github.com/joho/godotenv v1.5.1
